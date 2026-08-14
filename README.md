@@ -22,7 +22,11 @@ kernel-message-reporter -o kmsg.log dd if=/dev/zero of=/dev/null bs=1M count=100
 
 ## Install
 
-Download a prebuilt binary from the [Releases](https://github.com/appare45/kernel-message-reporter/releases) page, or build from source:
+```sh
+go install github.com/appare45/kernel-message-reporter@latest
+```
+
+Or download a prebuilt binary from the [Releases](https://github.com/appare45/kernel-message-reporter/releases) page, or build from source:
 
 ```sh
 go build -o kernel-message-reporter .
