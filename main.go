@@ -44,12 +44,23 @@ func main() {
 	defer kmsg.Close()
 	kmsg.Seek(0, io.SeekEnd)
 
-	cmd.Run()
+	runErr := cmd.Run()
 
 	msgs, err := readKmsgs(kmsg)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for _, m := range msgs {
 		fmt.Fprint(out, m)
+	}
+
+	if runErr != nil {
+		var exitErr *exec.ExitError
+		if errors.As(runErr, &exitErr) {
+			os.Exit(exitErr.ExitCode())
+		}
+		log.Fatal(runErr)
 	}
 }
 
