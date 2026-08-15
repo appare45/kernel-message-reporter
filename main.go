@@ -68,12 +68,12 @@ func readKmsgs(kmsg *os.File) (messages []string, err error) {
 	buf := make([]byte, 1024)
 	for {
 		kmsg.SetReadDeadline(time.Now().Add(100 * time.Millisecond))
-		var n int
-		n, err = kmsg.Read(buf)
-		if errors.Is(err, os.ErrDeadlineExceeded) {
+		n, readErr := kmsg.Read(buf)
+		if errors.Is(readErr, os.ErrDeadlineExceeded) {
 			break
 		}
-		if err != nil {
+		if readErr != nil {
+			err = readErr
 			return
 		}
 		if _, msg, ok := strings.Cut(string(buf[:n]), ";"); ok {
